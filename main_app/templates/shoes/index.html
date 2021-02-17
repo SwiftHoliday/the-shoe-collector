@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Shoe Lists</h1>
+<hr>
+
+{% for shoe in shoes %}
+    <div class="card">
+        <div class="card-content">
+            <span class="car-title">{{ shoe.name }}</span>
+            <p>Brand: {{ shoe.brand }}</p>
+            <p>Price: {{ shoe.price }}</p>
+            <p>Release: {{ shoe.release }}</p>
+        </div>
+    </div>
+{% endfor%}
+
+{% endblock %}
