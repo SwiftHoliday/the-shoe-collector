@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Shoe
 # Create your views here.
 
@@ -22,3 +22,10 @@ class ShoeCreate(CreateView):
     model = Shoe
     fields = '__all__'
     
+class ShoeUpdate(UpdateView):
+    model = Shoe
+    fields = ['price', 'release']
+
+class ShoeDelete(DeleteView):
+    model = Shoe
+    success_url = '/shoes/'

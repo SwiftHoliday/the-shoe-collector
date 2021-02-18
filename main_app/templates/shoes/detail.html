@@ -11,6 +11,10 @@
             <p>Release: {{ shoe.release }}</p>
             <p>Price: ${{ shoe.price }}</p>
         </div>
+        <div class="card-action">
+            <a href="{% url 'shoes_update' shoe.id %}">Update</a>
+            <a href="{% url 'shoes_delete' shoe.id %}">Delete</a>
+        </div>
     </div> 
     
 {% endblock %}
