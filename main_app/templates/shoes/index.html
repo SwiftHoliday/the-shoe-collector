@@ -6,16 +6,16 @@
 <hr>
 
 {% for shoe in shoes %}
-<a href="/shoes/{{ shoe.id }}">
-    <div class="card">
-        <div class="card-content">
-            <span class="car-title">{{ shoe.name }}</span>
-            <p>Brand: {{ shoe.brand }}</p>
-            <p>Release: {{ shoe.release }}</p>
-            <p>Price: ${{ shoe.price }}</p>
+    <a href="{% url 'shoes_detail' shoe.id %}">
+        <div class="card">
+            <div class="card-content">
+                <span class="car-title">{{ shoe.name }}</span>
+                <p>Brand: {{ shoe.brand }}</p>
+                <p>Release: {{ shoe.release }}</p>
+                <p>Price: ${{ shoe.price }}</p>
+            </div>
         </div>
-    </div>
-</a>
-    {% endfor%}
+    </a>
+{% endfor%}
     
 {% endblock %}
