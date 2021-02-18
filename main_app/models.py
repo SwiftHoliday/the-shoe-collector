@@ -6,3 +6,6 @@ class Shoe(models.Model):
     brand = models.CharField(max_length=250)
     release = models.CharField(max_length=250)
     price = models.IntegerField()
+
+    def __str__(self):
+        return self.name
