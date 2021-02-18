@@ -21,3 +21,4 @@ def shoes_detail(request, shoe_id):
 class ShoeCreate(CreateView):
     model = Shoe
     fields = '__all__'
+    
