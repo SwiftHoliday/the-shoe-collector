@@ -2,11 +2,8 @@
 
 {% block content %}
 
-<h1>Shoe List</h1>
+<h1>Shoe Details</h1>
 <hr>
-
-{% for shoe in shoes %}
-<a href="/shoes/{{ shoe.id }}">
     <div class="card">
         <div class="card-content">
             <span class="car-title">{{ shoe.name }}</span>
@@ -14,8 +11,6 @@
             <p>Release: {{ shoe.release }}</p>
             <p>Price: ${{ shoe.price }}</p>
         </div>
-    </div>
-</a>
-    {% endfor%}
+    </div> 
     
 {% endblock %}
