@@ -8,8 +8,8 @@ class Shoe:
     def __init__(self, name, brand, price, release):
         self.name = name
         self.brand = brand
-        self.price = price
         self.release = release
+        self.price = price
 
 shoes = [
     Shoe('Yeezy Boost 350 Zebra', 'Adidas', '$375', '2017-02-25'),
@@ -23,5 +23,5 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-def index(request):
+def shoes_index(request):
     return render(request, 'shoes/index.html', {'shoes': shoes })
