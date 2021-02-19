@@ -12,4 +12,7 @@ urlpatterns = [
     path('shoes/<int:shoe_id>/assoc_seller/<int:seller_id>/', views.assoc_seller, name='assoc_seller'),
     path('sellers/', views.SellerList.as_view(), name='sellers_index'),
     path('sellers/create/', views.SellerCreate.as_view(), name='sellers_create'),
+    path('sellers/<int:pk>/', views.SellerDetail.as_view(), name='sellers_detail'),
+    path('sellers/<int:pk>/update/', views.SellerUpdate.as_view(), name='sellers_update'),
+    path('sellers/<int:pk>/delete/', views.SellerDelete.as_view(), name='sellers_delete'),
 ]

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .models import Shoe, Seller
@@ -33,19 +33,25 @@ def shoes_detail(request, shoe_id):
         'seller': sellers_shoe_doesnt_have
         })
     
-
 def assoc_seller(request, shoe_id, seller_id):
     Shoe.objects.get(id=shoe_id).sellers.add(seller_id)
     return redirect('shoes_detail', shoe_id=shoe_id)
 
 
-
 class SellerList(ListView):
     model = Seller
 
-class SellerDetail(DeleteView):
+class SellerDetail(DetailView):
     model = Seller
 
 class SellerCreate(CreateView):
     model = Seller
     fields = '__all__'
+
+class SellerUpdate(UpdateView):
+    model = Seller
+    fields = ['name']
+
+class SellerDelete(DeleteView):
+    model = Seller
+    success_url = '/sellers/'  
