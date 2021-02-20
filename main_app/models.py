@@ -25,3 +25,6 @@ class Shoe(models.Model):
 
     def get_absolute_url(self):
         return reverse('shoes_detail', kwargs={'shoe_id': self.id})
+
+class Cleaning(models.Model):
+    date = models.DateField()
