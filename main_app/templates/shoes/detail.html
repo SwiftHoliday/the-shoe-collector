@@ -5,15 +5,16 @@
 <h1>Shoe Details</h1>
 <hr>
 <div class="row">
-  
-  <div class="card">
-    <div class="card-content">
-      <span class="car-title">{{ shoe.name }}</span>
-      <p>Brand: {{ shoe.brand }}</p>
-      <p>Release: {{ shoe.release }}</p>
-      <p>Price: ${{ shoe.price }}</p>
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="car-title">{{ shoe.name }}</span>
+        <p>Brand: {{ shoe.brand }}</p>
+        <p>Release: {{ shoe.release }}</p>
+        <p>Price: ${{ shoe.price }}</p>
+      </div>
     </div>
-    <div class="card-action">
+      <div class="card-action">
       <a href="{% url 'shoes_update' shoe.id %}">Edit</a>
       <a href="{% url 'shoes_delete' shoe.id %}">Delete</a>
     </div>
@@ -48,7 +49,7 @@
   </div>
 </div>
 
-
+<hr>
   <div class="col s6">
     <h3>Available Sellers</h3>
     {% if sellers.count %}
@@ -61,16 +62,32 @@
       </div>
       <div class="card-action">
         <form action="{% url 'assoc_seller' shoe.id seller.id %}" method="post">
-          {% csrf_token %}
-          <button type="submit" class="btn">Add</button>
-        </form>
-      </div>
-    </div>
-    {% endfor %}
+                {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
     {% else %}
-    <h5>{{shoe.name}} Already Has All Sellers Available</h5>
+      <h5>{{shoe.name}} Already Has All Sellers Available</h5>
     {% endif %}
   </div>
 </div>
 
+
+
+<script>
+  
+  var dateEl = document.getElementById('id_date');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+
+  
+  var selectEl = document.getElementById('id_cleaner');
+  M.FormSelect.init(selectEl);
+</script>
 {% endblock %}
