@@ -4,41 +4,73 @@
 
 <h1>Shoe Details</h1>
 <hr>
-    <div class="card">
-        <div class="card-content">
-            <span class="car-title">{{ shoe.name }}</span>
-            <p>Brand: {{ shoe.brand }}</p>
-            <p>Release: {{ shoe.release }}</p>
-            <p>Price: ${{ shoe.price }}</p>
-        </div>
-        <div class="card-action">
-            <a href="{% url 'shoes_update' shoe.id %}">Edit</a>
-            <a href="{% url 'shoes_delete' shoe.id %}">Delete</a>
-        </div>
+<div class="row">
+  
+  <div class="card">
+    <div class="card-content">
+      <span class="car-title">{{ shoe.name }}</span>
+      <p>Brand: {{ shoe.brand }}</p>
+      <p>Release: {{ shoe.release }}</p>
+      <p>Price: ${{ shoe.price }}</p>
     </div>
-    
-    <div class="col s6">
-        <h3>Available Sellers</h3>
-        {% if sellers.count %}
-          {% for seller in sellers.all %}
-            <div class="card">
-              <div class="card-content">
-                <span class="card-title">
-                  A <span style="color: {{ seller.color }}">{{ seller.color }}</span> {{ seller.name }}
-                </span>
-              </div>
-              <div class="card-action">
-                <form action="{% url 'assoc_seller' shoe.id seller.id %}" method="post">
-                    {% csrf_token %}
-                  <button type="submit" class="btn">Add</button>
-                </form>
-              </div>
-            </div>
-          {% endfor %}
-        {% else %}
-          <h5>{{shoe.name}} Already Has All Sellers Available</h5>
-        {% endif %}
+    <div class="card-action">
+      <a href="{% url 'shoes_update' shoe.id %}">Edit</a>
+      <a href="{% url 'shoes_delete' shoe.id %}">Delete</a>
+    </div>
+  </div>
+</div>
+
+<div class="col s6">
+    <form action="{% url 'add_cleaning' shoe.id %}" method="POST">
+      {% csrf_token %}
+      {{ cleaning_form.as_p }}
+      <input type="submit" class="btn" value="Add Cleaning">
+    </form>
+    <br>
+    {% if shoe.cleaned_for_today %}
+      <div class="card-panel teal-text center-align">{{shoe.name}} has been cleaned today</div>
+    {% else %}
+      <div class="card-panel red-text center-align">{{shoe.name}} might need a cleaning</div>
+    {% endif %}
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Cleaner</th></tr>
+      </thead>
+      <tbody>
+        {% for cleaning in shoe.cleaning_set.all %}
+          <tr>
+            <td>{{cleaning.date}}</td>
+            <td>{{cleaning.get_cleaner_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+  <div class="col s6">
+    <h3>Available Sellers</h3>
+    {% if sellers.count %}
+    {% for seller in sellers.all %}
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">
+          A <span style="color: {{ seller.color }}">{{ seller.color }}</span> {{ seller.name }}
+        </span>
+      </div>
+      <div class="card-action">
+        <form action="{% url 'assoc_seller' shoe.id seller.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn">Add</button>
+        </form>
       </div>
     </div>
-    
+    {% endfor %}
+    {% else %}
+    <h5>{{shoe.name}} Already Has All Sellers Available</h5>
+    {% endif %}
+  </div>
+</div>
+
 {% endblock %}

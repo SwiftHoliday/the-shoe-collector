@@ -1,5 +1,11 @@
 from django.db import models
 from django.urls import reverse
+
+CLEANERS = (
+    ('R', 'Reshoevn8r'),
+    ('SL', 'Sneaker Lab'),
+    ('JM', 'Jason Markk'),
+)
 # Create your models here.
 
 class Seller(models.Model):
@@ -27,4 +33,15 @@ class Shoe(models.Model):
         return reverse('shoes_detail', kwargs={'shoe_id': self.id})
 
 class Cleaning(models.Model):
-    date = models.DateField()
+    date = models.DateField('cleaning date')
+    cleaner = models.CharField(
+        max_length=2,
+        choices=CLEANERS,
+        default=CLEANERS[0][0]
+    )
+
+
+    shoe = models.ForeignKey(Shoe, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Cleaning with {self.get_cleaner_display()} at {self.date}"
