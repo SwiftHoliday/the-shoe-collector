@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date
 
 CLEANERS = (
     ('R', 'Reshoevn8r'),
@@ -26,6 +27,10 @@ class Shoe(models.Model):
     price = models.IntegerField()
     sellers = models.ManyToManyField(Seller)
 
+
+    def cleaned_for_today(self):
+        return self.cleaning_set.filter(date=date.today()).count() >= len(CLEANERS)
+        
     def __str__(self):
         return self.name
 
@@ -45,3 +50,6 @@ class Cleaning(models.Model):
 
     def __str__(self):
         return f"Cleaning with {self.get_cleaner_display()} at {self.date}"
+
+    class Meta:
+        ordering = ['-date']
