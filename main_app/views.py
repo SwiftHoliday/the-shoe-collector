@@ -32,7 +32,7 @@ def shoes_detail(request, shoe_id):
     cleaning_form = CleaningForm()
     return render(request, 'shoes/detail.html', {
         'shoe': shoe, 'cleaning_form': cleaning_form,
-        'seller': sellers_shoe_doesnt_have
+        'available_sellers': sellers_shoe_doesnt_have
     })
 
 def add_cleaning(request, shoe_id):

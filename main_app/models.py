@@ -10,7 +10,7 @@ CLEANERS = (
 # Create your models here.
 
 class Seller(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=50)
     
     def __str__(self):
         return self.name
@@ -21,9 +21,9 @@ class Seller(models.Model):
 
 
 class Shoe(models.Model):
-    name = models.CharField(max_length=250)
-    brand = models.CharField(max_length=250)
-    release = models.CharField(max_length=250)
+    name = models.CharField(max_length=75)
+    brand = models.CharField(max_length=75)
+    release = models.CharField(max_length=75)
     price = models.IntegerField()
     sellers = models.ManyToManyField(Seller)
 
