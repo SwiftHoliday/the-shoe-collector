@@ -1,8 +1,14 @@
+import uuid
+import boto3
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .models import Shoe, Seller
+from .models import Shoe, Seller, Photo
 from .forms import CleaningForm
+
+S3_BASE_URL = 'https://s3.us-east-2.amazonaws.com/'
+BUCKET = 'jonathyn-app-theshoecollector'
+
 # Create your views here.
 class ShoeCreate(CreateView):
     model = Shoe
@@ -47,6 +53,31 @@ def add_cleaning(request, shoe_id):
 def assoc_seller(request, shoe_id, seller_id):
     Shoe.objects.get(id=shoe_id).sellers.add(seller_id)
     return redirect('shoes_detail', shoe_id=shoe_id)
+
+
+
+def add_photo(request, shoe_id):
+    photo_file = request.FILES.get('photo_file', None)
+
+    if photo_file:
+        s3 = boto3.client('s3')
+
+        index_of_last_period = photo_file.name.rfind('.')
+
+        key = uuid.uuid4().hex[:6] + photo_file.name[index_of_last_period:]
+
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+
+            photo = Photo(url=url, shoe_id=shoe_id)
+            photo.save()
+        except:
+            print('An error occurred uploading files to AWS')
+
+    return redirect('shoes_detail', shoe_id=shoe_id)
+
 
 
 class SellerList(ListView):

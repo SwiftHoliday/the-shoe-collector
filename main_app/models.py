@@ -18,8 +18,6 @@ class Seller(models.Model):
     def get_absolute_url(self):
         return reverse('sellers_detail', kwargs={'pk': self.id})
 
-
-
 class Shoe(models.Model):
     name = models.CharField(max_length=75)
     brand = models.CharField(max_length=75)
@@ -45,11 +43,19 @@ class Cleaning(models.Model):
         default=CLEANERS[0][0]
     )
 
-
     shoe = models.ForeignKey(Shoe, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Cleaning with {self.get_cleaner_display()} at {self.date}"
 
-    class Meta:
-        ordering = ['-date']
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    shoe = models.ForeignKey(Shoe, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for shoe id #{self.shoe_id} @ {self.url}"
+
+class Meta:
+    ordering = ['-date']
+
+
