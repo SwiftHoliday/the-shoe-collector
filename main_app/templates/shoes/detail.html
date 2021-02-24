@@ -83,7 +83,7 @@
           </div>
 
           <div class="card-action">
-            <form action="" method="POST">
+            <form action="{% url 'assoc_seller' shoe.id seller.id %}" method="POST">
               {% csrf_token %}
               <button type="submit" class="btn">Add</button>
             </form>
@@ -97,32 +97,7 @@
 </div>
 
 
-<!-- <div class="row">
-  <hr>
-  <div class="col s6">
-    <h3>Available Sellers</h3>
-    {% if shoe.sellers.count %}
-    {% for seller in shoe.sellers.all %}
-    <div class="card">
-      <div class="card-content">
-        <span class="card-title">
-          <span style="color: {{ seller.color }}">{{ seller.color }}</span> {{ seller.name }}
-        </span>
-      </div> -->
-      <!-- <div class="card-action">
-        <form action="{% url 'assoc_seller' shoe.id seller.id %}" method="post">
-          {% csrf_token %}
-          <button type="submit" class="btn">Add</button>
-        </form>
-      </div>
-    </div>
-    {% endfor %}
-    {% else %}
-    <h5>{{shoe.name}} Already Has All Sellers Available</h5>
-    {% endif %}
-  </div>
-</div>
-</div> -->
+
 
 <script>
   
