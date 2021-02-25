@@ -3,12 +3,31 @@ import boto3
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 from .models import Shoe, Seller, Photo
 from .forms import CleaningForm
 
 S3_BASE_URL = 'https://s3.us-east-2.amazonaws.com/'
 BUCKET = 'jonathyn-app-theshoecollector'
 
+def signup(request):
+    error_message = ''
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('shoes_index')
+        else:
+            error_message = 'Invaild data for signup :('
+
+    form = UserCreationForm()
+    context = { 'form': form, 'error_message': error_message }
+    return render(request, 'registration/signup.html', context)
+    
 # Create your views here.
 class ShoeCreate(CreateView):
     model = Shoe
