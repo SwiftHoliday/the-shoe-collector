@@ -5,6 +5,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Shoe, Seller, Photo
 from .forms import CleaningForm
 
@@ -27,9 +29,9 @@ def signup(request):
     form = UserCreationForm()
     context = { 'form': form, 'error_message': error_message }
     return render(request, 'registration/signup.html', context)
-    
+
 # Create your views here.
-class ShoeCreate(CreateView):
+class ShoeCreate(LoginRequiredMixin, CreateView):
     model = Shoe
     fields = ['name', 'brand', 'release', 'price']
 
@@ -37,11 +39,11 @@ class ShoeCreate(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
     
-class ShoeUpdate(UpdateView):
+class ShoeUpdate(LoginRequiredMixin, UpdateView):
     model = Shoe
     fields = ['price', 'release']
 
-class ShoeDelete(DeleteView):
+class ShoeDelete(LoginRequiredMixin, DeleteView):
     model = Shoe
     success_url = '/shoes/'
 
@@ -51,10 +53,13 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+@login_required
 def shoes_index(request):
-    shoes = Shoe.objects.all()
+    # shoes = Shoe.objects.all()
+    shoes = Shoe.objects.filter(user=request.user)
     return render(request, 'shoes/index.html', {'shoes': shoes})
-    
+
+@login_required   
 def shoes_detail(request, shoe_id):
     shoe = Shoe.objects.get(id=shoe_id)
     sellers_shoe_doesnt_have = Seller.objects.exclude(id__in=shoe.sellers.all().values_list('id'))
@@ -64,6 +69,7 @@ def shoes_detail(request, shoe_id):
         'available_sellers': sellers_shoe_doesnt_have
     })
 
+@login_required
 def add_cleaning(request, shoe_id):
     form = CleaningForm(request.POST)
     if form.is_valid():
@@ -72,13 +78,13 @@ def add_cleaning(request, shoe_id):
         new_cleaning.save()
     return redirect('shoes_detail', shoe_id=shoe_id)
 
-    
+@login_required   
 def assoc_seller(request, shoe_id, seller_id):
     Shoe.objects.get(id=shoe_id).sellers.add(seller_id)
     return redirect('shoes_detail', shoe_id=shoe_id)
 
 
-
+@login_required
 def add_photo(request, shoe_id):
     photo_file = request.FILES.get('photo_file', None)
 
@@ -103,20 +109,20 @@ def add_photo(request, shoe_id):
 
 
 
-class SellerList(ListView):
+class SellerList(LoginRequiredMixin, ListView):
     model = Seller
 
-class SellerDetail(DetailView):
+class SellerDetail(LoginRequiredMixin, DetailView):
     model = Seller
 
-class SellerCreate(CreateView):
+class SellerCreate(LoginRequiredMixin, CreateView):
     model = Seller
     fields = '__all__'
 
-class SellerUpdate(UpdateView):
+class SellerUpdate(LoginRequiredMixin, UpdateView):
     model = Seller
     fields = ['name']
 
-class SellerDelete(DeleteView):
+class SellerDelete(LoginRequiredMixin, DeleteView):
     model = Seller
     success_url = '/sellers/'  
