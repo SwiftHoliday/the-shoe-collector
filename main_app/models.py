@@ -2,6 +2,9 @@ from django.db import models
 from django.urls import reverse
 from datetime import date
 
+from django.contrib.auth.models import User
+
+
 CLEANERS = (
     ('R', 'Reshoevn8r'),
     ('SL', 'Sneaker Lab'),
@@ -25,6 +28,7 @@ class Shoe(models.Model):
     price = models.IntegerField()
     sellers = models.ManyToManyField(Seller)
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def cleaned_for_today(self):
         return self.cleaning_set.filter(date=date.today()).count() >= len(CLEANERS)

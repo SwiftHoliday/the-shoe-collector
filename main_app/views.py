@@ -13,6 +13,10 @@ BUCKET = 'jonathyn-app-theshoecollector'
 class ShoeCreate(CreateView):
     model = Shoe
     fields = ['name', 'brand', 'release', 'price']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
     
 class ShoeUpdate(UpdateView):
     model = Shoe
